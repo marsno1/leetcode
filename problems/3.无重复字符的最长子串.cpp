@@ -31,27 +31,42 @@ public:
     //     return max_len;
     // }
 
-    // 用指针记录子串的起始位置
+    // 用map保存字符与下标的映射
+    // int lengthOfLongestSubstring(string s) {  
+    //     unordered_map<char, int> m;
+    //     int start = 0;
+    //     int max_len = 0;
+    //     for (int i = 0; i < s.length(); ++i) {
+    //         auto it = m.find(s[i]);
+    //         if (it != m.end()) {
+    //             int prev_index = it->second;
+    //             while (start <= prev_index) {
+    //                 m.erase(s[start]);
+    //                 ++start;
+    //             }
+    //         }
+    //         m[s[i]] = i;
+    //         max_len = max(max_len, i - start + 1);
+    //     }
+    //     return max_len;
+    // }
+
+    // 用数组保存字符与下标的映射
     int lengthOfLongestSubstring(string s) {  
-        vector<char> dict(256, 0);
+        vector<int> m(256, -1);
+        int start = 0;
         int max_len = 0;
-        int start = 0; // start index of substring
-        int n = s.length();
-        for (int i = 0; i < n; ++i) {
-            if (dict[s[i]] != 0) {
-                max_len = max(max_len, i - start);
-                while (true) {
-                    dict[s[start]] = 0;
-                    if (s[start] == s[i]) {
-                        ++start;
-                        break;
-                    }
+        for (int i = 0; i < s.length(); ++i) {
+            int prev_index = m[s[i]];
+            if (prev_index != -1) {
+                while (start <= prev_index) {
+                    m[s[start]] = -1;
                     ++start;
                 }
             }
-            dict[s[i]] = 1;
+            m[s[i]] = i;
+            max_len = max(max_len, i - start + 1);
         }
-        max_len = max(max_len, n - start);
         return max_len;
     }
 };
