@@ -52,6 +52,25 @@ public:
     // }
 
     // 用数组保存字符与下标的映射
+    // int lengthOfLongestSubstring(string s) {  
+    //     vector<int> m(256, -1);
+    //     int start = 0;
+    //     int max_len = 0;
+    //     for (int i = 0; i < s.length(); ++i) {
+    //         int prev_index = m[s[i]];
+    //         if (prev_index != -1) {
+    //             while (start <= prev_index) {
+    //                 m[s[start]] = -1;
+    //                 ++start;
+    //             }
+    //         }
+    //         m[s[i]] = i;
+    //         max_len = max(max_len, i - start + 1);
+    //     }
+    //     return max_len;
+    // }
+
+    // 优化的线性算法
     int lengthOfLongestSubstring(string s) {  
         vector<int> m(256, -1);
         int start = 0;
@@ -59,12 +78,11 @@ public:
         for (int i = 0; i < s.length(); ++i) {
             int prev_index = m[s[i]];
             if (prev_index != -1) {
-                while (start <= prev_index) {
-                    m[s[start]] = -1;
-                    ++start;
-                }
+                // a b c [x y z c] a
+                // 如果此时start指向x, i指向a, 那么start应该保持不变
+                start = max(start, prev_index + 1);
             }
-            m[s[i]] = i;
+            m[s[i]] = i; // 更新当前字符的最新下标
             max_len = max(max_len, i - start + 1);
         }
         return max_len;
