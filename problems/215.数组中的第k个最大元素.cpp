@@ -31,7 +31,7 @@ public:
         // i之前的元素肯定都是小于等于nums[lower]，所以最后把nums[lower]和nums[j]交换即可
         while (i <= j) {
             if (nums[i] > nums[lower] && nums[j] < nums[lower]) {
-            // 如果最后一个
+            // 左边数比支点大，右边数比支点小，则对调两个数
                 swap(nums[i], nums[j]);
                 ++i;
                 --j;
@@ -41,6 +41,7 @@ public:
                 --j;
             }
         }
+        // j指向的数比lower指向的数小或相等
         swap(nums[lower], nums[j]);
         return j;
     }
