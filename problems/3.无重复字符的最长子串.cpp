@@ -72,20 +72,23 @@ public:
 
     // 优化的线性算法
     int lengthOfLongestSubstring(string s) {  
+        int n = s.length();
         vector<int> m(256, -1);
         int start = 0;
-        int max_len = 0;
-        for (int i = 0; i < s.length(); ++i) {
-            int prev_index = m[s[i]];
-            if (prev_index != -1) {
-                // a b c [x y z c] a
-                // 如果此时start指向x, i指向a, 那么start应该保持不变
-                start = max(start, prev_index + 1);
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            int prev = m[s[i]];
+            if (prev != -1) {
+                // 1.start跳到x的下一个位置
+                // [a b c x y z] x 
+                // 2.start保持不变
+                // a b c [x y z] a
+                start = max(start, prev + 1);
             }
-            m[s[i]] = i; // 更新当前字符的最新下标
-            max_len = max(max_len, i - start + 1);
+            m[s[i]] = i;
+            ans = max(ans, i - start + 1);
         }
-        return max_len;
+        return ans;
     }
 };
 // @lc code=end

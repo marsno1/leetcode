@@ -16,35 +16,24 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        ListNode *head = NULL;
-        ListNode *tail = NULL;
-        ListNode *p = NULL;
-        while (true) {
-            if (l1 != NULL && l2 != NULL) {
-                if (l1->val <= l2->val) {
-                    p = l1;
-                    l1 = l1->next;
-                } else {
-                    p = l2;
-                    l2 = l2->next;
-                }
-            } else if (l1 != NULL) {
-                p = l1;
+        ListNode head(0);
+        ListNode *curr = &head;
+        while (l1 && l2) {
+            if (l1->val <= l2->val) {
+                curr->next = l1;
                 l1 = l1->next;
-            } else if (l2 != NULL) {
-                p = l2;
+            } else {
+                curr->next = l2;
                 l2 = l2->next;
-            } else {
-                break;
             }
-            if (head == NULL) {
-                head = tail = p;
-            } else {
-                tail->next = p;
-                tail = p;
-            }
+            curr = curr->next;
         }
-        return head;
+        if (l1 != NULL) {
+            curr->next = l1;
+        } else {
+            curr->next = l2;
+        }
+        return head.next;
     }
 };
 // @lc code=end

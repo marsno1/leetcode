@@ -9,17 +9,19 @@ class Solution {
 public:
     int maxArea(vector<int>& height) {
         // 双指针左右夹逼法
-        int max_area = 0;
-        for(int i = 0, j = height.size() - 1; i < j;) {
-            int area = (j - i) * min(height[i], height[j]);
-            max_area = max(max_area, area);
-            if (height[i] < height[j]) {
-                i++;
+        int l = 0;
+        int r = height.size() - 1;
+        int ans = 0;
+        while (l < r) {
+            int h = min(height[l], height[r]);
+            ans = max(ans, (r - l) * h);
+            if (height[l] < height[r]) {
+                ++l;
             } else {
-                j--;
+                --r;
             }
         }
-        return max_area;
+        return ans;
     }
 };
 // @lc code=end

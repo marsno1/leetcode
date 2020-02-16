@@ -8,13 +8,15 @@
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
-        set<int> s(nums.begin(), nums.end());
+        unordered_set<int> s(nums.begin(), nums.end());
         int curr_len = 0;
         int max_len = 0;
+        // 时间复杂度O(2n)
         for (int i = 0; i < nums.size(); ++i) {
-            // 找出以nums[i]为起点的连续序列，并计算该序列长度
+            // 首先确保nums[i]-1不存在，就可以将nums[i]作为起点
             if (s.count(nums[i] - 1) == 0) {
                 curr_len = 1;
+                // 找出以nums[i]为起点的连续序列，并计算该序列长度
                 while (s.count(nums[i] + curr_len) == 1) {
                     ++curr_len;
                 }

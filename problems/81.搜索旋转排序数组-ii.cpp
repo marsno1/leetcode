@@ -1,30 +1,35 @@
 /*
- * @lc app=leetcode.cn id=33 lang=cpp
+ * @lc app=leetcode.cn id=81 lang=cpp
  *
- * [33] 搜索旋转排序数组
+ * [81] 搜索旋转排序数组 II
  */
 
 // @lc code=start
 class Solution {
 public:
-    int search(vector<int>& nums, int target) {
-        int l = 0l;
+    bool search(vector<int>& nums, int target) {
+        int l = 0;
         int r = nums.size() - 1;
 
         while (l <= r) {
             int mid = l + (r - l) / 2;
             if (target == nums[mid]) {
-                return mid;
+                return true;
             }
-
+            if (nums[l] == nums[r]) {
+                // 把左边重复的元素删除
+                ++l;
+                continue;
+            }
             if (nums[l] <= nums[mid]) {
-                // low,mid有可能相等，那么左边只有一个元素，此时认为一个元素也是有序数组
+                // 左边是有序的
                 if (nums[l] <= target && target < nums[mid]) {
                     r = mid - 1;
                 } else {
                     l = mid + 1;
                 }
             } else {
+                // 右边是有序的
                 if (nums[mid] < target && target <= nums[r]) {
                     l = mid + 1;
                 } else {
@@ -32,7 +37,7 @@ public:
                 }
             }
         }
-        return -1;
+        return false;
     }
 };
 // @lc code=end
