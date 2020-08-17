@@ -13,37 +13,33 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
-struct Comp {
-    bool operator() (ListNode* l, ListNode* r) {
-        return l->val > r->val;
-    }
-};
-
 class Solution {
+    struct Comp {
+        bool operator() (ListNode* a, ListNode* b) {
+            return a->val > b->val;
+        }
+    };
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        priority_queue<ListNode*, vector<ListNode*>, Comp> pq;
-        for (auto p: lists) {
-            if (p) {
-                pq.push(p);
+        priority_queue<ListNode*, vector<ListNode*>, Comp> q;
+        for (int i = 0; i < lists.size(); ++i) {
+            if (lists[i]) {
+                q.push(lists[i]);
             }
         }
 
-        ListNode *head = NULL, *curr = NULL;
-        while(!pq.empty()) {
-            ListNode *node = pq.top();
-            pq.pop();
-            if (head == NULL) {
-                head = curr = node;
-            } else {
-                curr->next = node;
-                curr = node;
-            }
-            if (node->next != NULL) {
-                pq.push(node->next);
+        ListNode head(0);
+        ListNode *curr = &head;
+        while (!q.empty()) {
+            ListNode *t = q.top();
+            q.pop();
+            curr->next = t;
+            curr = curr->next;
+            if (t->next) {
+                q.push(t->next);
             }
         }
-        return head;
+        return head.next;
     }
 };
 // @lc code=end
