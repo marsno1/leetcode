@@ -6,13 +6,14 @@ class Solution {
 public:
     // 解法一
     int largestRectangleArea(vector<int>& heights) {
+        // 在最后放一根高度为0的柱子，用于把栈中剩余的柱子都触发弹出
         heights.push_back(0);
         stack<Rect> s;
         int ans = 0;
         for (int height : heights) {
             int accu_width = 0;
             while (!s.empty() && s.top().height >= height) {
-                // 因为栈里保存的是左延宽度，栈顶柱子对应的矩形的实际宽度，是把右边比它高的柱子(即消掉的柱子)的左延宽度累加得到。
+                // 因为栈里保存的是左延宽度，所以栈顶柱子对应的矩形的实际宽度，是由右边比它高的柱子(即消掉的柱子)的左延宽度累加得到。
                 accu_width += s.top().width;
                 int area = s.top().height * accu_width;
                 ans = max(ans, area);
