@@ -5,6 +5,7 @@ using namespace std;
 class Solution {
 public:
     int maxSubArray(vector<int>& nums) {
+        // 解法一：动态规划
         int n = nums.size();
         if (n == 1) return nums[0];
 
@@ -16,6 +17,10 @@ public:
             ans = max(ans, dp[i]);
         }
         return ans;
+
+        // 解法二：前缀和+前缀最小值
+
+        // 解法三：贪心
     }
 };
 //leetcode submit region end(Prohibit modification and deletion)
