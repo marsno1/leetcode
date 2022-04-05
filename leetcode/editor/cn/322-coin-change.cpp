@@ -3,19 +3,34 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
 public:
-    // 动规
+    // 动规：完全背包问题
+//    int coinChange(vector<int>& coins, int amount) {
+//        int n = coins.size();
+//        coins.insert(coins.begin(), 0);
+//        vector<vector<int>> f(n + 1, vector<int>(amount + 1, 1e9));
+//        f[0][0] = 0;
+//        for (int i = 1; i <= n; ++i) {
+//            for (int j = 0; j <= amount; ++j) {
+//                f[i][j] = f[i - 1][j];
+//                if (j >= coins[i])
+//                    f[i][j] = min(f[i][j], f[i][j - coins[i]] + 1);
+//            }
+//        }
+//        return f[n][amount] == 1e9 ? -1 : f[n][amount];
+//    }
+
+    // 动规：另一种思路
     int coinChange(vector<int>& coins, int amount) {
-        vector<int> dp(amount + 1, -1);
-        dp[0] = 0;
+        vector<int> f(amount + 1, 1e9);
+        f[0] = 0;
         for (int i = 1; i <= amount; ++i) {
-            dp[i] = INT_MAX; // 表示无解
+            // 取所有f[i - coins[j]] + 1中的最小值
             for (int j = 0; j < coins.size(); ++j) {
-                if (i - coins[j] < 0) continue; // 忽略值为负的前一个状态
-                if (dp[i - coins[j]] == INT_MAX) continue; // 忽略无解的前一个状态
-                dp[i] = min(dp[i], dp[i - coins[j]] + 1);
+                if (i - coins[j] >= 0)
+                    f[i] = min(f[i], f[i - coins[j]] + 1);
             }
         }
-        return dp[amount] == INT_MAX ? -1 : dp[amount];
+        return f[amount] == 1e9 ? -1 : f[amount];
     }
 
     // 记忆化搜索
